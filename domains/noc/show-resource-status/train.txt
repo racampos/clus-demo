@@ -1,0 +1,68 @@
+show my {application|resource} status
+show {application|resource} status
+show the {application|resource} status
+what's my {application|resource} status
+what is my {application|resource} status
+please show my {application|resource} status
+would you give me my {application|resource} status
+I'd like to see how my {applications|resource} are doing
+Could you show me the status of my {application|resource}
+Go ahead and show me my {applications|resource} status
+show my {app|resource} status
+show {app|resource} status
+show the {app|resource} status
+what's my {app|resource} status
+what is my {app|resource} status
+please show my {app|resource} status
+would you give me my {app|resource} status
+I'd like to see how my {apps|resource}  are doing
+Could you show me the status of my {apps|resource} 
+Go ahead and show me my {apps|resource}  status
+show the status of my {application|resource}
+show the status of the {application|resource}
+what's the status of my {application|resource}
+what is the status of my {application|resource}
+please show the status of my {application|resource}
+would you give me the status of my {application|resource}
+Go ahead and show the status of my {application|resource}
+show the status of my {applications|resource}
+show the status of the {applications|resource}
+what's the status of my {applications|resource}
+what is the status of my {applications|resource}
+please show the status of my {applications|resource}
+would you give me the status of my {applications|resource}
+Go ahead and show the status of my {applications|resource}
+show my {network|resource} status
+show {network|resource} status
+show the {network|resource} status
+what's my {network|resource} status
+what is my {network|resource} status
+please show my {network|resource} status
+would you give me my {network|resource} status
+I'd like to see how my {networks|resource} are doing
+Could you show me the status of my {network|resource}
+Go ahead and show me my {networks|resource} status
+show my {net|resource} status
+show {net|resource} status
+show the {net|resource} status
+what's my {net|resource} status
+what is my {net|resource} status
+please show my {net|resource} status
+would you give me my {net|resource} status
+I'd like to see how my {nets|resource}  are doing
+Could you show me the status of my {nets|resource} 
+Go ahead and show me my {nets|resource}  status
+show the status of my {network|resource}
+show the status of the {network|resource}
+what's the status of my {network|resource}
+what is the status of my {network|resource}
+please show the status of my {network|resource}
+would you give me the status of my {network|resource}
+Go ahead and show the status of my {network|resource}
+show the status of my {networks|resource}
+show the status of the {networks|resource}
+what's the status of my {networks|resource}
+what is the status of my {networks|resource}
+please show the status of my {networks|resource}
+would you give me the status of my {networks|resource}
+Go ahead and show the status of my {networks|resource}

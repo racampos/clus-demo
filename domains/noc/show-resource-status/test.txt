@@ -1,0 +1,12 @@
+I want to see the status of my {applications|resource}
+I want to know how my {applications|resource} are doing
+Please show me the status of all my {applications|resource}
+I want to see the status of my {apps|resource}
+I want to know how my {apps|resource} are doing
+Please show me the status of all my {apps|resource}
+I want to see the status of my {network|resource}
+I want to know how my {network|resource} are doing
+Please show me the status of all my {network|resource}
+
+
+

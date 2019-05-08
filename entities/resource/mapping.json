@@ -1,0 +1,19 @@
+{
+    "entities": [
+        {
+            "whitelist": [
+                "application",
+                "app",
+                "apps"
+            ],
+            "cname": "applications"
+        },
+        {
+            "whitelist": [
+                "net",
+                "nets"
+            ],
+            "cname": "network"
+        }
+    ]
+}
