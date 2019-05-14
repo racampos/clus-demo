@@ -142,7 +142,7 @@ def health_rule_violation():
     health_rule_violation = False
     if events.len() > 0:
         for event in events:
-            if event["type"] = "POLICY_OPEN_CRITICAL":
+            if event["type"] == "POLICY_OPEN_CRITICAL":
                 health_rule_violation = True
     return health_rule_violation
 
