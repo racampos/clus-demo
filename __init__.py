@@ -91,8 +91,12 @@ def resource_status(request, responder):
         if resource == "network":
             replies = ["There's a problem with you network."]
         elif resource == "applications":
-            graph_url = get_app_perf()
-            payload = {"text": "All your applications are running normally. Here is a graph of your application's performance over the last 60 minutes.", "url": graph_url}
+            if health_rule_violation():
+                graph_url = get_calls_per_min()
+                payload = {"text": "There's an issue with your application. Here is a graph of your application's performance over the last 60 minutes.", "url": graph_url}
+            else:
+                graph_url = get_app_perf()
+                payload = {"text": "All your applications are running normally. Here is a graph of your application's performance over the last 60 minutes.", "url": graph_url}
         responder.frame = {}
     else:
         replies = ["I'm sorry, you didn't specify the resource."]   
@@ -141,10 +145,10 @@ def health_rule_violation():
         'Host': "altusconsulting.saas.appdynamics.com",
         'cache-control': "no-cache"
         }
-    response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
+    response = requests.request("GET", appd_url, data=payload, headers=headers, params=querystring)
     events = response.json()
     health_rule_violation = False
-    if events.len() > 0:
+    if len(events) > 0:
         for event in events:
             if event["type"] == "POLICY_OPEN_CRITICAL":
                 health_rule_violation = True
@@ -154,7 +158,7 @@ def health_rule_violation():
 def get_calls_per_min():
 
     appd_url = "https://altusconsulting.saas.appdynamics.com/controller/rest/applications/MyNodeApp/metric-data"
-    querystring = {"rollup":"false","metric-path":"Overall Application Performance|Calls per Minute","time-range-type":"BEFORE_NOW","duration-in-mins":"60"}
+    querystring = {"output":"JSON","rollup":"false","metric-path":"Overall Application Performance|Calls per Minute","time-range-type":"BEFORE_NOW","duration-in-mins":"60"}
     payload = ""
     headers = {
         'Authorization': "Bearer eyJraWQiOiIxIiwiYWxnIjoiSFMyNTYifQ.eyJpc3MiOiJBcHBEeW5hbWljcyIsImF1ZCI6IkFwcERfQVBJcyIsImV4cCI6MTU4ODg4MzQ4OSwianRpIjoiVXdtdnBtMGF3ZHVCQW9UbHM5WGMwdyIsImlhdCI6MTU1NzM0NzQ4OSwibmJmIjoxNTU3MzQ3MzY5LCJzdWIiOiJhcGl1c2VyIiwidHlwZSI6IkFQSV9DTElFTlQiLCJpZCI6ImI4OWJlNGJhLTVmYmMtNDJkYy1hNzU2LThjZDRlZTBlNDdjZiIsImFjY3RJZCI6ImIwYmJmMDZkLTZlZDMtNDI4YS1hYTgwLThkMDMwODI0NzNhYiIsImFjY3ROYW1lIjoiYWx0dXNjb25zdWx0aW5nIn0.PMKUS5bwHpgWwMwmpp5IO4As56IW52yp5Xm8URWoNw0",
@@ -162,5 +166,20 @@ def get_calls_per_min():
         'Host': "altusconsulting.saas.appdynamics.com",
         'cache-control': "no-cache"
         }
-    response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
-
+    response = requests.request("GET", appd_url, data=payload, headers=headers, params=querystring)
+    metrics = response.json()
+    metrics = metrics[0]["metricValues"]
+    values = []
+    for metric in metrics:
+        value = metric["value"]
+        values.append(value)
+    
+    graph_url = "http://localhost:5000/graphs"
+    payload = {"data": values,
+	           "graph_label": "'Overall Application Performance|Calls per Minute'",
+	           "app_name": "'MyNodeApp Application Status'",
+	           "vertical_axis_label": "'Calls per Minute'"
+            }
+    headers = {"Content-Type": "application/json"}
+    response = requests.request("POST", graph_url, data=json.dumps(payload), headers=headers)
+    return response.text
