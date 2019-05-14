@@ -93,16 +93,19 @@ def resource_status(request, responder):
         elif resource == "applications":
             if health_rule_violation():
                 graph_url = get_calls_per_min()
-                payload = {"text": "There's an issue with your application. Here is a graph of your application's performance over the last 60 minutes.", "url": graph_url}
+                payload = {"url": graph_url}
+                reply = "There's an issue with your application. Here is a graph of your application's performance over the last 60 minutes."
             else:
                 graph_url = get_app_perf()
-                payload = {"text": "All your applications are running normally. Here is a graph of your application's performance over the last 60 minutes.", "url": graph_url}
+                payload = {"url": graph_url}
+                reply = "All your applications are running normally. Here is a graph of your application's performance over the last 60 minutes."
         responder.frame = {}
     else:
-        replies = ["I'm sorry, you didn't specify the resource."]   
+        reply = "I'm sorry, you didn't specify the resource."
      
-    #responder.reply(replies)
     responder.act("display-web-view", payload=payload)
+    responder.reply(text=reply)
+    responder.act('sleep')
 
 def get_app_perf():
 
