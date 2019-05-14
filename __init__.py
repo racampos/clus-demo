@@ -120,7 +120,11 @@ def get_app_perf():
         values.append(value)
     
     graph_url = "http://localhost:5000/graphs"
-    payload = {"data": values}
+    payload = {"data": values,
+	           "graph_label": "'Overall Application Performance|Average Response Time (ms)'",
+	           "app_name": "'MyNodeApp Application Status'",
+	           "vertical_axis_label": "'Response Time (ms)'"
+            }
     headers = {"Content-Type": "application/json"}
     response = requests.request("POST", graph_url, data=json.dumps(payload), headers=headers)
     return response.text
