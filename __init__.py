@@ -92,8 +92,7 @@ def resource_status(request, responder):
             replies = ["There's a problem with you network."]
         elif resource == "applications":
             graph_url = get_app_perf()
-            ##replies = ["All your applications are running normally. Here is a graph of your application's performance over the last 60 minutes: {}".format(graph_url)]
-            payload = {"text": "All your applications are running normally.", "url": graph_url}
+            payload = {"text": "All your applications are running normally. Here is a graph of your application's performance over the last 60 minutes.", "url": graph_url}
         responder.frame = {}
     else:
         replies = ["I'm sorry, you didn't specify the resource."]   
@@ -120,9 +119,44 @@ def get_app_perf():
         value = metric["value"]
         values.append(value)
     
-    graph_url = "http://localhost:5000/graph"
+    graph_url = "http://localhost:5000/graphs"
     payload = {"data": values}
     headers = {"Content-Type": "application/json"}
     response = requests.request("POST", graph_url, data=json.dumps(payload), headers=headers)
     return response.text
     
+
+def health_rule_violation():
+
+    appd_url = "https://altusconsulting.saas.appdynamics.com/controller/rest/applications/49309/events"
+    querystring = {"output":"JSON","time-range-type":"BEFORE_NOW","duration-in-mins":"60","event-types":"APPLICATION_ERROR,APP_SERVER_RESTART,APPLICATION_CONFIG_CHANGE,POLICY_OPEN_CRITICAL","severities":"INFO,WARN,ERROR"}
+    payload = ""
+    headers = {
+        'Authorization': "Bearer eyJraWQiOiIxIiwiYWxnIjoiSFMyNTYifQ.eyJpc3MiOiJBcHBEeW5hbWljcyIsImF1ZCI6IkFwcERfQVBJcyIsImV4cCI6MTU4ODg4MzQ4OSwianRpIjoiVXdtdnBtMGF3ZHVCQW9UbHM5WGMwdyIsImlhdCI6MTU1NzM0NzQ4OSwibmJmIjoxNTU3MzQ3MzY5LCJzdWIiOiJhcGl1c2VyIiwidHlwZSI6IkFQSV9DTElFTlQiLCJpZCI6ImI4OWJlNGJhLTVmYmMtNDJkYy1hNzU2LThjZDRlZTBlNDdjZiIsImFjY3RJZCI6ImIwYmJmMDZkLTZlZDMtNDI4YS1hYTgwLThkMDMwODI0NzNhYiIsImFjY3ROYW1lIjoiYWx0dXNjb25zdWx0aW5nIn0.PMKUS5bwHpgWwMwmpp5IO4As56IW52yp5Xm8URWoNw0",
+        'Accept': "*/*",
+        'Host': "altusconsulting.saas.appdynamics.com",
+        'cache-control': "no-cache"
+        }
+    response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
+    events = response.json()
+    health_rule_violation = False
+    if events.len() > 0:
+        for event in events:
+            if event["type"] = "POLICY_OPEN_CRITICAL":
+                health_rule_violation = True
+    return health_rule_violation
+
+
+def get_calls_per_min():
+
+    appd_url = "https://altusconsulting.saas.appdynamics.com/controller/rest/applications/MyNodeApp/metric-data"
+    querystring = {"rollup":"false","metric-path":"Overall Application Performance|Calls per Minute","time-range-type":"BEFORE_NOW","duration-in-mins":"60"}
+    payload = ""
+    headers = {
+        'Authorization': "Bearer eyJraWQiOiIxIiwiYWxnIjoiSFMyNTYifQ.eyJpc3MiOiJBcHBEeW5hbWljcyIsImF1ZCI6IkFwcERfQVBJcyIsImV4cCI6MTU4ODg4MzQ4OSwianRpIjoiVXdtdnBtMGF3ZHVCQW9UbHM5WGMwdyIsImlhdCI6MTU1NzM0NzQ4OSwibmJmIjoxNTU3MzQ3MzY5LCJzdWIiOiJhcGl1c2VyIiwidHlwZSI6IkFQSV9DTElFTlQiLCJpZCI6ImI4OWJlNGJhLTVmYmMtNDJkYy1hNzU2LThjZDRlZTBlNDdjZiIsImFjY3RJZCI6ImIwYmJmMDZkLTZlZDMtNDI4YS1hYTgwLThkMDMwODI0NzNhYiIsImFjY3ROYW1lIjoiYWx0dXNjb25zdWx0aW5nIn0.PMKUS5bwHpgWwMwmpp5IO4As56IW52yp5Xm8URWoNw0",
+        'Accept': "*/*",
+        'Host': "altusconsulting.saas.appdynamics.com",
+        'cache-control': "no-cache"
+        }
+    response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
+
