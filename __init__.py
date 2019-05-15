@@ -105,7 +105,7 @@ def resource_status(request, responder):
      
     responder.act("display-web-view", payload=payload)
     responder.reply(text=reply)
-    responder.sleep()
+    responder.act('sleep')
 
 def get_app_perf():
 
