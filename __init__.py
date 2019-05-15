@@ -105,7 +105,7 @@ def resource_status(request, responder):
      
     responder.act("display-web-view", payload=payload)
     responder.reply(text=reply)
-    responder.act('sleep')
+    responder.sleep()
 
 def get_app_perf():
 
@@ -129,7 +129,7 @@ def get_app_perf():
     graph_url = "http://localhost:5000/graphs"
     payload = {"data": values,
 	           "graph_label": "'Overall Application Performance|Average Response Time (ms)'",
-	           "app_name": "'MyNodeApp Application Status'",
+	           "app_name": "MyNodeApp",
 	           "vertical_axis_label": "'Response Time (ms)'"
             }
     headers = {"Content-Type": "application/json"}
@@ -180,7 +180,7 @@ def get_calls_per_min():
     graph_url = "http://localhost:5000/graphs"
     payload = {"data": values,
 	           "graph_label": "'Overall Application Performance|Calls per Minute'",
-	           "app_name": "'MyNodeApp Application Status'",
+	           "app_name": "MyNodeApp",
 	           "vertical_axis_label": "'Calls per Minute'"
             }
     headers = {"Content-Type": "application/json"}
