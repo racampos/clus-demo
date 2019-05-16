@@ -2,6 +2,13 @@
 from mindmeld import Application
 import requests
 import json
+import urllib3
+import time
+
+from urllib3.exceptions import InsecureRequestWarning  # for insecure https warnings
+from requests.auth import HTTPBasicAuth  # for Basic Auth
+
+urllib3.disable_warnings(InsecureRequestWarning)  # disable insecure https warnings
 
 app = Application(__name__)
 
@@ -69,9 +76,23 @@ def start_over(request, responder):
 
 @app.handle(intent='do-path-trace')
 def path_trace(request, responder):
+    dnac_token = get_dnac_jwt_token(DNAC_AUTH)
+    path_id = create_path_trace('10.10.22.74', '10.10.22.114', dnac_token)
+    time.sleep(1)
+    trace = get_path_trace_info(path_id, dnac_token)
+    graph_url = "http://localhost:5000/graphs"
+    payload = {"graph_type": "dnac",
+               "trace": trace
+            }
+    headers = {"Content-Type": "application/json"}
+    response = requests.request("POST", graph_url, data=json.dumps(payload), headers=headers)
+    graph_url = response.text
+    payload = {"url": graph_url}
+    reply = "Here is a path trace to your application" 
 
-    replies = ["Performing a path trace..."]        
-    responder.reply(replies)
+    responder.act("display-web-view", payload=payload)
+    responder.reply(text=reply)
+    responder.act('sleep')
 
 
 @app.handle(intent='open-ticket')
@@ -127,7 +148,8 @@ def get_app_perf():
         values.append(value)
     
     graph_url = "http://localhost:5000/graphs"
-    payload = {"data": values,
+    payload = {"graph_type": "appd",
+               "data": values,
 	           "graph_label": "'Overall Application Performance|Average Response Time (ms)'",
 	           "app_name": "MyNodeApp",
 	           "vertical_axis_label": "'Response Time (ms)'"
@@ -178,7 +200,8 @@ def get_calls_per_min():
         values.append(value)
     
     graph_url = "http://localhost:5000/graphs"
-    payload = {"data": values,
+    payload = {"graph_type": "appd",
+               "data": values,
 	           "graph_label": "'Overall Application Performance|Calls per Minute'",
 	           "app_name": "MyNodeApp",
 	           "vertical_axis_label": "'Calls per Minute'"
@@ -186,3 +209,82 @@ def get_calls_per_min():
     headers = {"Content-Type": "application/json"}
     response = requests.request("POST", graph_url, data=json.dumps(payload), headers=headers)
     return response.text
+
+DNAC_AUTH = HTTPBasicAuth("devnetuser", "Cisco123!")
+DNAC_URL = "https://sandboxdnac.cisco.com"
+
+def get_dnac_jwt_token(dnac_auth):
+    """
+    Create the authorization token required to access DNA C
+    Call to DNA C - /api/system/v1/auth/login
+    :param dnac_auth - DNA C Basic Auth string
+    :return: DNA C JWT token
+    """
+
+    url = DNAC_URL + '/api/system/v1/auth/login'
+    header = {'content-type': 'application/json'}
+    response = requests.get(url, auth=dnac_auth, headers=header, verify=False)
+    response_header = response.headers
+    dnac_jwt_token = response_header['Set-Cookie']
+
+    return dnac_jwt_token
+
+
+def create_path_trace(src_ip, dest_ip, dnac_jwt_token):
+    """
+    This function will create a new Path Trace between the source IP address {src_ip} and the
+    destination IP address {dest_ip}
+    :param src_ip: Source IP address
+    :param dest_ip: Destination IP address
+    :param dnac_jwt_token: DNA C token
+    :return: DNA C path visualisation id
+    """
+
+    param = {
+        'destIP': dest_ip,
+        'periodicRefresh': False,
+        'sourceIP': src_ip
+    }
+
+    url = DNAC_URL + '/api/v1/flow-analysis'
+    header = {'accept': 'application/json', 'content-type': 'application/json', 'Cookie': dnac_jwt_token}
+    path_response = requests.post(url, data=json.dumps(param), headers=header, verify=False)
+    path_json = path_response.json()
+    path_id = path_json['response']['flowAnalysisId']
+    return path_id
+
+
+def get_path_trace_info(path_id, dnac_jwt_token):
+    """
+    This function will return the path trace details for the path visualisation {id}
+    :param path_id: DNA C path visualisation id
+    :param dnac_jwt_token: DNA C token
+    :return: Path visualisation status, and the details in a list [device,interface_out,interface_in,device...]
+    """
+
+    url = DNAC_URL + '/api/v1/flow-analysis/' + path_id
+    header = {'accept': 'application/json', 'content-type': 'application/json', 'Cookie': dnac_jwt_token}
+    path_response = requests.get(url, headers=header, verify=False)
+    path_json = path_response.json()
+    path_info = path_json['response']
+    path_status = path_info['request']['status']
+    path_list = []
+    if path_status == 'COMPLETED':
+        network_info = path_info['networkElementsInfo']
+        for elem in network_info:
+            path_list.append({"type": simplify_type(elem["type"]),
+                              "ip": elem["ip"]
+                              })
+
+    return path_list
+
+
+def simplify_type(type):
+    if type == "Routers":
+        return "router"
+    elif type == "Switches and Hubs":
+        return "switch"
+    elif type == "wired":
+        return "server"
+    else:
+        return "unknown"
