@@ -76,8 +76,8 @@ def start_over(request, responder):
 
 @app.handle(intent='do-path-trace')
 def path_trace(request, responder):
-    #dnac_token = get_dnac_jwt_token(DNAC_AUTH)
-    dnac_token = "X-JWT-ACCESS-TOKEN=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1YmQ5OGQzNWIyYmVhMDAwNGMzZWM5YmYiLCJhdXRoU291cmNlIjoiaW50ZXJuYWwiLCJ0ZW5hbnROYW1lIjoiVE5UMCIsInJvbGVzIjpbIjViZDM2MzRiYjJiZWEwMDA0YzNlYmI1YSJdLCJ0ZW5hbnRJZCI6IjViZDM2MzRhYjJiZWEwMDA0YzNlYmI1OCIsImV4cCI6MTU1ODExMzg5MywidXNlcm5hbWUiOiJkZXZuZXR1c2VyIn0.y8oQ1kDcg2tIkXnRNbKsm36KzRyXYStUhTtuh1U-vf4;Version=1;Comment=;Domain=;Path=/;Max-Age=3600;Secure;HttpOnly"
+    dnac_token = get_dnac_jwt_token(DNAC_AUTH)[:-1]
+    #dnac_token = "X-JWT-ACCESS-TOKEN=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1YmQ5OGQzNWIyYmVhMDAwNGMzZWM5YmYiLCJhdXRoU291cmNlIjoiaW50ZXJuYWwiLCJ0ZW5hbnROYW1lIjoiVE5UMCIsInJvbGVzIjpbIjViZDM2MzRiYjJiZWEwMDA0YzNlYmI1YSJdLCJ0ZW5hbnRJZCI6IjViZDM2MzRhYjJiZWEwMDA0YzNlYmI1OCIsImV4cCI6MTU1ODExMzg5MywidXNlcm5hbWUiOiJkZXZuZXR1c2VyIn0.y8oQ1kDcg2tIkXnRNbKsm36KzRyXYStUhTtuh1U-vf4;Version=1;Comment=;Domain=;Path=/;Max-Age=3600;Secure;HttpOnly"
     path_id = create_path_trace('10.10.22.74', '10.10.22.114', dnac_token)
     time.sleep(0.5)
     trace = get_path_trace_info(path_id, dnac_token)
