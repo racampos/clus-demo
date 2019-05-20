@@ -1,9 +1,9 @@
-"""This module contains the Workbench food ordering blueprint application"""
 from mindmeld import Application
 import requests
 import json
 import urllib3
 import time
+
 
 from urllib3.exceptions import InsecureRequestWarning  # for insecure https warnings
 from requests.auth import HTTPBasicAuth  # for Basic Auth
@@ -77,7 +77,6 @@ def start_over(request, responder):
 @app.handle(intent='do-path-trace')
 def path_trace(request, responder):
     dnac_token = get_dnac_jwt_token(DNAC_AUTH)
-    #dnac_token = "X-JWT-ACCESS-TOKEN=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1YmQ5OGQzNWIyYmVhMDAwNGMzZWM5YmYiLCJhdXRoU291cmNlIjoiaW50ZXJuYWwiLCJ0ZW5hbnROYW1lIjoiVE5UMCIsInJvbGVzIjpbIjViZDM2MzRiYjJiZWEwMDA0YzNlYmI1YSJdLCJ0ZW5hbnRJZCI6IjViZDM2MzRhYjJiZWEwMDA0YzNlYmI1OCIsImV4cCI6MTU1ODExMzg5MywidXNlcm5hbWUiOiJkZXZuZXR1c2VyIn0.y8oQ1kDcg2tIkXnRNbKsm36KzRyXYStUhTtuh1U-vf4;Version=1;Comment=;Domain=;Path=/;Max-Age=3600;Secure;HttpOnly"
     path_id = create_path_trace('10.10.22.74', '10.10.22.114', dnac_token)
     time.sleep(0.5)
     trace = get_path_trace_info(path_id, dnac_token)
@@ -99,8 +98,40 @@ def path_trace(request, responder):
 @app.handle(intent='open-ticket')
 def open_ticket(request, responder):
 
-    replies = ["Opening a support ticket..."]        
-    responder.reply(replies)
+    # Set the request parameters
+    url = 'https://dev76017.service-now.com/api/now/table/incident'
+
+    # Eg. User name="admin", Password="admin" for this code sample.
+    user = 'admin'
+    pwd = 'tS49OtJhnCDc'
+
+    # Set proper headers
+    headers = {"Content-Type":"application/json","Accept":"application/json"}
+
+    # Do the HTTP request
+    response = requests.post(url, auth=(user, pwd), headers=headers ,data="{\"short_description\":\"There's a problem with the application MyNodeApp.\",\"category\":\"Network\",\"subcategory\":\"Application Performance\",\"description\":\"The threshold of 3000 requests per second was surpassed during the last hour. Requests per minute graph: https://clus-demo.altus.cr/graphs/static/31fae0d03c5740269d8a729f48c2c875.html\"}")
+
+    # Check for HTTP codes other than 200
+    if response.status_code != 200: 
+        #print('Status:', response.status_code, 'Headers:', response.headers, 'Error Response:',response.json())
+        print("Success!!!")
+    # Decode the JSON response into a dictionary and use the data
+    data = response.json()
+    ticket_number = data['result']['number']
+    responder.slots['ticket_number'] = ticket_number
+    graph_url = "http://localhost:5000/graphs"
+    payload = {"graph_type": "service_now",
+               "ticket_number": ticket_number
+            }
+    headers = {"Content-Type": "application/json"}
+    response = requests.request("POST", graph_url, data=json.dumps(payload), headers=headers)
+    graph_url = response.text
+    payload = {"url": graph_url}
+    reply = "Your ticket number is {ticket_number}."    
+
+    responder.act("display-web-view", payload=payload)
+    responder.reply(text=reply)
+    responder.act('sleep')
 
     
 @app.handle(intent='show-resource-status')
