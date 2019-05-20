@@ -99,17 +99,17 @@ def path_trace(request, responder):
 def open_ticket(request, responder):
 
     # Set the request parameters
-    url = 'https://dev76017.service-now.com/api/now/table/incident'
+    url = 'https://dev49204.service-now.com/api/now/table/incident'
 
     # Eg. User name="admin", Password="admin" for this code sample.
     user = 'admin'
-    pwd = 'tS49OtJhnCDc'
+    pwd = 'Cisco123!'
 
     # Set proper headers
     headers = {"Content-Type":"application/json","Accept":"application/json"}
 
     # Do the HTTP request
-    response = requests.post(url, auth=(user, pwd), headers=headers ,data="{\"short_description\":\"There's a problem with the application MyNodeApp.\",\"category\":\"Network\",\"subcategory\":\"Application Performance\",\"description\":\"The threshold of 3000 requests per second was surpassed during the last hour. Requests per minute graph: https://clus-demo.altus.cr/graphs/static/31fae0d03c5740269d8a729f48c2c875.html\"}")
+    response = requests.post(url, auth=(user, pwd), headers=headers ,data="{\"short_description\":\"There's a problem with the application MyNodeApp.\",\"category\":\"Network\",\"subcategory\":\"Application Performance\",\"description\":\"The threshold of 3000 requests per second was surpassed during the last hour. Requests per minute graph: https://clus-demo.altus.cr/graphs/static/31fae0d03c5740269d8a729f48c2c875.html\",\"caller_id\":\"webexassistant\"}")
 
     # Check for HTTP codes other than 200
     if response.status_code != 200: 
