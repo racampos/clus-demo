@@ -14,6 +14,24 @@ app = Application(__name__)
 
 __all__ = ['app']
 
+ip = {
+        "router": "10.10.22.74",
+        "core-switch": "10.10.22.73",
+        "access-switch-1": "10.10.22.66",
+        "access-switch-2": "10.10.22.70",
+        "server-1": "10.10.22.98",
+        "server-2": "10.10.22.114"
+    }
+
+dev = {
+        "10.10.22.74": "Border Router",
+        "10.10.22.73": "Core Switch",
+        "10.10.22.66": "Access Switch 1",
+        "10.10.22.70": "Access Switch 2",
+        "10.10.22.98": "Server 1",
+        "10.10.22.114": "Server 2"
+    }
+
 
 @app.handle(default=True)
 @app.handle(intent='unsupported')
@@ -22,8 +40,9 @@ def default(request, responder):
     When the user asks an unrelated question, convey the lack of understanding for the requested
     information and prompt to return to food ordering.
     """
-    replies = ["Sorry, not sure what you meant there. I can help you to obtain information about the status of your applications and your network, to perform path traces and to open support tickets."]
-    responder.reply(replies)
+    reply = "Sorry, not sure what you meant there. I can help you to obtain information about the status of your applications and your network, to perform path traces and to open support tickets."
+    responder.reply(text=reply)
+    responder.speak(text=reply)
 
 
 @app.handle(intent='greet')
@@ -40,6 +59,8 @@ def welcome(request, responder):
 
     # Build up the final natural language response and reply to the user.
     responder.reply(prefix + 'I can help you to obtain information about the status of your applications and your network, to perform path traces and to open support tickets.')
+    responder.speak(prefix + 'I can help you to obtain information about the status of your applications and your network, to perform path traces and to open support tickets.')
+
 
 @app.handle(intent='exit')
 def say_goodbye(request, responder):
@@ -51,6 +72,7 @@ def say_goodbye(request, responder):
 
     # Respond with a random selection from one of the canned "goodbye" responses.
     responder.reply(['Bye!', 'Goodbye!', 'Have a nice day.', 'See you later.'])
+    responder.speak(['Bye!', 'Goodbye!', 'Have a nice day.', 'See you later.'])
 
 
 @app.handle(intent='help')
@@ -58,8 +80,9 @@ def provide_help(request, responder):
     """
     When the user asks for help, provide some sample queries they can try.
     """
-    replies = ["I can help you to obtain information about the status of your applications and your network, to perform path traces and to open support tickets."]
-    responder.reply(replies)
+    reply = "I can help you to obtain information about the status of your applications and your network, to perform path traces and to open support tickets."
+    responder.reply(text=reply)
+    responder.speak(text=reply)
 
 
 @app.handle(intent='start_over')
@@ -76,23 +99,108 @@ def start_over(request, responder):
 
 @app.handle(intent='do-path-trace')
 def path_trace(request, responder):
-    dnac_token = get_dnac_jwt_token(DNAC_AUTH)
-    path_id = create_path_trace('10.10.22.74', '10.10.22.114', dnac_token)
-    time.sleep(0.5)
-    trace = get_path_trace_info(path_id, dnac_token)
-    graph_url = "http://localhost:5000/graphs"
-    payload = {"graph_type": "dnac",
-               "trace": trace
-            }
-    headers = {"Content-Type": "application/json"}
-    response = requests.request("POST", graph_url, data=json.dumps(payload), headers=headers)
-    graph_url = response.text
-    payload = {"url": graph_url}
-    reply = "Here is a path trace to your application" 
+
+    src = next((e for e in request.entities if e['role'] == 'source'), None)
+    if src:
+        src = src['value'][0]['cname']
+        responder.frame['source_device'] = src
+    dest = next((e for e in request.entities if e['role'] == 'destination'), None)
+    if dest:
+        dest = dest['value'][0]['cname']
+        responder.frame['destination_device'] = dest
+
+    if src and dest:
+        dnac_token = get_dnac_jwt_token(DNAC_AUTH)
+        path_id = create_path_trace(ip[src], ip[dest], dnac_token)
+        time.sleep(0.5)
+        trace = get_path_trace_info(path_id, dnac_token)
+        graph_url = "http://localhost:5000/graphs"
+        payload = {"graph_type": "dnac",
+                "trace": trace
+                }
+        headers = {"Content-Type": "application/json"}
+        response = requests.request("POST", graph_url, data=json.dumps(payload), headers=headers)
+        graph_url = response.text
+        payload = {"url": graph_url}
+        reply = "Here is the path trace you requested."
+    else:
+        graph_url = "http://localhost:5000/graphs"
+        payload = {"graph_type": "network_diagram"}
+        headers = {"Content-Type": "application/json"}
+        response = requests.request("POST", graph_url, data=json.dumps(payload), headers=headers)
+        graph_url = response.text
+        payload = {"url": graph_url}
+        
+        if src and not dest:
+            responder.frame['source_device'] = src
+            responder.params.allowed_intents = ['do_path_trace_followup']
+            reply = "Here is a network diagram. To what destination do you want to perform the trace?"
+        elif not src and dest:
+            responder.frame['destination_device'] = dest
+            responder.params.allowed_intents = ['do_path_trace_followup']
+            reply = "Here is a network diagram. From what device do you want to perform the trace"
+        else:
+            responder.params.allowed_intents = ['do-path-trace']
+            reply = "Here is a network diagram. Please specify the source and destination devices for the trace"
 
     responder.act("display-web-view", payload=payload)
     responder.reply(text=reply)
+    responder.speak(text=reply)
     responder.act('sleep')
+
+@app.handle(intent='do-path-trace-followup')
+def do_path_trace_followup(request, responder):
+    print(request.entities)
+    print(request.frame['destination_device'])
+    print(request.frame['source_device'])
+    try:
+        src = request.frame['source_device']
+    except:
+        src = None
+    try:
+        dest = request.frame['destination_device']
+    except:
+        dest = None
+
+    if not src:
+        src = next((e for e in request.entities if e['type'] == 'device'), None)
+        src = src['value'][0]['cname']
+    elif not dest:
+        dest = next((e for e in request.entities if e['type'] == 'device'), None)
+        dest = dest['value'][0]['cname']
+
+    if src and dest:
+        dnac_token = get_dnac_jwt_token(DNAC_AUTH)
+        path_id = create_path_trace(ip[src], ip[dest], dnac_token)
+        time.sleep(0.5)
+        trace = get_path_trace_info(path_id, dnac_token)
+        graph_url = "http://localhost:5000/graphs"
+        payload = {"graph_type": "dnac",
+                "trace": trace
+                }
+        headers = {"Content-Type": "application/json"}
+        response = requests.request("POST", graph_url, data=json.dumps(payload), headers=headers)
+        graph_url = response.text
+        payload = {"url": graph_url}
+        reply = "Here is the path trace you requested."
+    else:
+        graph_url = "http://localhost:5000/graphs"
+        payload = {"graph_type": "network_diagram"}
+        headers = {"Content-Type": "application/json"}
+        response = requests.request("POST", graph_url, data=json.dumps(payload), headers=headers)
+        graph_url = response.text
+        payload = {"url": graph_url}
+        responder.params.allowed_intents = ['do-path-trace']
+        reply = "Here is a network diagram. Please specify the source and destination devices for the trace"
+ 
+    responder.act("display-web-view", payload=payload)
+    responder.reply(text=reply)
+    responder.speak(text=reply)
+    responder.act('sleep')
+    
+
+    
+    
 
 
 @app.handle(intent='open-ticket')
@@ -131,6 +239,7 @@ def open_ticket(request, responder):
 
     responder.act("display-web-view", payload=payload)
     responder.reply(text=reply)
+    responder.speak(text=reply)
     responder.act('sleep')
 
     
@@ -158,6 +267,7 @@ def resource_status(request, responder):
      
     responder.act("display-web-view", payload=payload)
     responder.reply(text=reply)
+    responder.speak(text=reply)
     responder.act('sleep')
 
 def get_app_perf():
@@ -308,7 +418,8 @@ def get_path_trace_info(path_id, dnac_jwt_token):
         network_info = path_info['networkElementsInfo']
         for elem in network_info:
             path_list.append({"type": simplify_type(elem["type"]),
-                              "ip": elem["ip"]
+                              "ip": elem["ip"],
+                              "name": dev[elem["ip"]]
                               })
 
     return path_list

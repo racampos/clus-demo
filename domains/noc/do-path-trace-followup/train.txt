@@ -1,0 +1,14 @@
+from {server 1|device}
+from {server on the left|device}
+from source {router|device}
+from the {core switch|device}
+source is {distribution switch one|device}
+the source should be {distribution switch two|device}
+source device {server on the right|device}
+to {server 1|device}
+to {server on the left|device}
+to destination {router|device}
+to the {core switch|device}
+destination is {distribution switch one|device}
+the destination should be {distribution switch two|device}
+destination device {server on the right|device}
