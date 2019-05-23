@@ -1,0 +1,74 @@
+{
+    "entities": [
+        {
+            "whitelist": [
+                "router",
+                "core router",
+                "edge router"
+            ],
+            "cname": "router"
+        },
+        {
+            "whitelist": [
+                "main switch",
+                "core switch",
+                "upper switch",
+                "top switch",
+                "distribution switch"
+            ],
+            "cname": "core-switch"
+        },
+        {
+            "whitelist": [
+                "access switch 1",
+                "access switch one",
+                "switch number one",
+                "first access switch",
+                "first switch",
+                "left switch",
+                "left access switch",
+                "switch on the left",
+                "left hand switch"
+            ],
+            "cname": "access-switch-1"
+        },
+        {
+            "whitelist": [
+                "access switch 2",
+                "access switch two",
+                "switch number two",
+                "second access switch",
+                "second switch",
+                "right switch",
+                "right access switch",
+                "switch on the right",
+                "right hand switch"
+            ],
+            "cname": "access-switch-2"
+        },
+        {
+            "whitelist": [
+                "server 1",
+                "server one",
+                "server number one",
+                "first server",
+                "left server",
+                "server on the left",
+                "left hand server"
+            ],
+            "cname": "server-1"
+        },
+        {
+            "whitelist": [
+                "server 2",
+                "server two",
+                "server number two",
+                "second server",
+                "right server",
+                "server on the right",
+                "right hand server"
+            ],
+            "cname": "server-2"
+        }
+    ]
+}

@@ -1,0 +1,36 @@
+router
+gateway
+border router
+edger router
+server 1
+first server
+server 2
+second server
+server one
+server number one
+server two
+server number two
+server on the right
+server on the left
+right server
+left server
+core switch
+main switch
+upper switch
+top switch
+distribution switch
+access switch 1
+access switch 2
+access switch one
+access switch two
+access switch number one
+access switch number two
+access switch on the left
+access switch on the right
+switch on the left
+switch on the right
+first switch
+second switch
+first access switch
+second access switch
+
