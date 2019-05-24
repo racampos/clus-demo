@@ -4,7 +4,21 @@
             "whitelist": [
                 "router",
                 "core router",
-                "edge router"
+                "edge router",
+                "border router",
+                "border of router",
+                "border of",
+                "border route",
+                "border of rocks",
+                "border of route a",
+                "border of routes",
+                "border of rock",
+                "border rowdy",
+                "border of route",
+                "border of router",
+                "border route",
+                "motor router",
+                "water router" 
             ],
             "cname": "router"
         },
@@ -14,7 +28,14 @@
                 "core switch",
                 "upper switch",
                 "top switch",
-                "distribution switch"
+                "distribution switch",
+                "court switch",
+                "court witch",
+                "core which",
+                "court which",
+                "call switch",
+                "or switch",
+                "cross switch"
             ],
             "cname": "core-switch"
         },
@@ -28,7 +49,11 @@
                 "left switch",
                 "left access switch",
                 "switch on the left",
-                "left hand switch"
+                "left hand switch",
+                "exit switch one",
+                "nexus switch one",
+                "axis switch one",
+                "x's switch one"
             ],
             "cname": "access-switch-1"
         },
@@ -42,7 +67,16 @@
                 "right switch",
                 "right access switch",
                 "switch on the right",
-                "right hand switch"
+                "right hand switch",
+                "exit switch two",
+                "nexus switch two",
+                "axis switch two",
+                "x's switch two",
+                "which two",
+                "whichita to",
+                "Serato",
+                "Sorrento",
+                "Serato"
             ],
             "cname": "access-switch-2"
         },
@@ -54,7 +88,9 @@
                 "first server",
                 "left server",
                 "server on the left",
-                "left hand server"
+                "left hand server",
+                "silver one",
+                "civic one"
             ],
             "cname": "server-1"
         },
@@ -66,7 +102,12 @@
                 "second server",
                 "right server",
                 "server on the right",
-                "right hand server"
+                "right hand server",
+                "sabertooth",
+                "server to",
+                "silver two",
+                "silver to",
+                "civic two"
             ],
             "cname": "server-2"
         }
