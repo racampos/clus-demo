@@ -99,7 +99,6 @@ def start_over(request, responder):
 
 @app.handle(intent='do-path-trace')
 def path_trace(request, responder):
-
     src = next((e for e in request.entities if e['role'] == 'source'), None)
     if src:
         src = src['value'][0]['cname']
@@ -353,7 +352,8 @@ def get_calls_per_min():
     return response.text
 
 DNAC_AUTH = HTTPBasicAuth("devnetuser", "Cisco123!")
-DNAC_URL = "https://sandboxdnac.cisco.com"
+#DNAC_URL = "https://sandboxdnac.cisco.com"
+DNAC_URL = "http://localhost:5001"
 
 def get_dnac_jwt_token(dnac_auth):
     """
@@ -363,14 +363,14 @@ def get_dnac_jwt_token(dnac_auth):
     :return: DNA C JWT token
     """
 
-    # url = DNAC_URL + '/api/system/v1/auth/login'
-    # header = {'content-type': 'application/json'}
-    # response = requests.get(url, auth=dnac_auth, headers=header, verify=False)
-    # response_header = response.headers
-    # dnac_jwt_token = response_header['Set-Cookie']
+    url = DNAC_URL + '/api/system/v1/auth/login'
+    header = {'content-type': 'application/json'}
+    response = requests.get(url, auth=dnac_auth, headers=header, verify=False)
+    response_header = response.headers
+    dnac_jwt_token = response_header['Set-Cookie']
 
-    with open('../dnac_token_request/dnac_token.cfg', 'r') as filehandle:  
-            dnac_jwt_token = filehandle.read()
+    # with open('../dnac_token_request/dnac_token.cfg', 'r') as filehandle:  
+    #         dnac_jwt_token = filehandle.read()
 
     return dnac_jwt_token
 

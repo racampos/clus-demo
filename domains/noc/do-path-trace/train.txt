@@ -598,3 +598,190 @@ i need to execute a Tresor to the {left switch|device|destination} from the {fir
 i'd like to do a Tresor to the {right switch|device|destination} from the {second server|device|source}
 i'd like to perform a Tresor to the {left server|device|destination} from the {core switch|device|source}
 i'd like to execute a Tresor to the {right server|device|destination} from the {router|device|source}
+path trace from {server 2|device|source} to {access switch 1|device|destination}
+do a path trace from {router|device|source} to {access switch 2|device|destination}
+perform a path trace from {server 1|device|source} to {switch on the right|device|destination}
+execute a path trace from {router|device|source} to {switch left|device|destination}
+execute a path trace from {core switch|device|source} to {router|device|destination}
+please do a path trace from {router|device|source} to {server 1|device|destination}
+please perform a path trace from {access switch 1|device|source} to {server 2|device|destination}
+please execute a path trace from {core switch|device|source} to {first switch|device|destination}
+would you please do a path trace from {server 1|device|source} to {first server|device|destination}
+would you please perform a path trace from {first server|device|source} to {core switch|device|destination}
+would you please execute a path trace from {second server|device|source} to {first access switch|device|destination}
+i need to do a path trace from {first switch|device|source} to {second access switch|device|destination}
+i need to perform a path trace from {second switch|device|source} to {router|device|destination}
+i need to execute a path trace from {left switch|device|source} to {first server|device|destination}
+i'd like to do a path trace from {right switch|device|source} to {second server|device|destination}
+i'd like to perform a path trace from {left server|device|source} to {core switch|device|destination}
+i'd like to execute a path trace from {right server|device|source} to {router|device|destination}
+trace route from {server 2|device|source} to {access switch 1|device|destination}
+do a trace route from {router|device|source} to {access switch 2|device|destination}
+perform a trace route from {server 1|device|source} to {switch on the right|device|destination}
+execute a trace route from {router|device|source} to {switch left|device|destination}
+execute a trace route from {core switch|device|source} to {router|device|destination}
+please do a trace route from {router|device|source} to {server 1|device|destination}
+please perform a trace route from {access switch 1|device|source} to {server 2|device|destination}
+please execute a trace route from {core switch|device|source} to {first switch|device|destination}
+would you please do a trace route from {server 1|device|source} to {first server|device|destination}
+would you please perform a trace route from {first server|device|source} to {core switch|device|destination}
+would you please execute a trace route from {second server|device|source} to {first access switch|device|destination}
+i need to do a trace route from {first switch|device|source} to {second access switch|device|destination}
+i need to perform a trace route from {second switch|device|source} to {router|device|destination}
+i need to execute a trace route from {left switch|device|source} to {first server|device|destination}
+i'd like to do a trace route from {right switch|device|source} to {second server|device|destination}
+i'd like to perform a trace route from {left server|device|source} to {core switch|device|destination}
+i'd like to execute a trace route from {right server|device|source} to {router|device|destination}
+traceroute from {server 2|device|source} to {access switch 1|device|destination}
+do a traceroute from {router|device|source} to {access switch 2|device|destination}
+perform a traceroute from {server 1|device|source} to {switch on the right|device|destination}
+execute a traceroute from {router|device|source} to {switch left|device|destination}
+execute a traceroute from {core switch|device|source} to {router|device|destination}
+please do a traceroute from {router|device|source} to {server 1|device|destination}
+please perform a traceroute from {access switch 1|device|source} to {server 2|device|destination}
+please execute a traceroute from {core switch|device|source} to {first switch|device|destination}
+would you please do a traceroute from {server 1|device|source} to {first server|device|destination}
+would you please perform a traceroute from {first server|device|source} to {core switch|device|destination}
+would you please execute a traceroute from {second server|device|source} to {first access switch|device|destination}
+i need to do a traceroute from {first switch|device|source} to {second access switch|device|destination}
+i need to perform a traceroute from {second switch|device|source} to {router|device|destination}
+i need to execute a traceroute from {left switch|device|source} to {first server|device|destination}
+i'd like to do a traceroute from {right switch|device|source} to {second server|device|destination}
+i'd like to perform a traceroute from {left server|device|source} to {core switch|device|destination}
+i'd like to execute a traceroute from {right server|device|source} to {router|device|destination}
+race track from {server 2|device|source} to {access switch 1|device|destination}
+do a race track from {router|device|source} to {access switch 2|device|destination}
+perform a race track from {server 1|device|source} to {switch on the right|device|destination}
+execute a race track from {router|device|source} to {switch left|device|destination}
+execute a race track from {core switch|device|source} to {router|device|destination}
+please do a race track from {router|device|source} to {server 1|device|destination}
+please perform a race track from {access switch 1|device|source} to {server 2|device|destination}
+please execute a race track from {core switch|device|source} to {first switch|device|destination}
+would you please do a race track from {server 1|device|source} to {first server|device|destination}
+would you please perform a race track from {first server|device|source} to {core switch|device|destination}
+would you please execute a race track from {second server|device|source} to {first access switch|device|destination}
+i need to do a race track from {first switch|device|source} to {second access switch|device|destination}
+i need to perform a race track from {second switch|device|source} to {router|device|destination}
+i need to execute a race track from {left switch|device|source} to {first server|device|destination}
+i'd like to do a race track from {right switch|device|source} to {second server|device|destination}
+i'd like to perform a race track from {left server|device|source} to {core switch|device|destination}
+i'd like to execute a race track from {right server|device|source} to {router|device|destination}
+race route from {server 2|device|source} to {access switch 1|device|destination}
+do a race route from {router|device|source} to {access switch 2|device|destination}
+perform a race route from {server 1|device|source} to {switch on the right|device|destination}
+execute a race route from {router|device|source} to {switch left|device|destination}
+execute a race route from {core switch|device|source} to {router|device|destination}
+please do a race route from {router|device|source} to {server 1|device|destination}
+please perform a race route from {access switch 1|device|source} to {server 2|device|destination}
+please execute a race route from {core switch|device|source} to {first switch|device|destination}
+would you please do a race route from {server 1|device|source} to {first server|device|destination}
+would you please perform a race route from {first server|device|source} to {core switch|device|destination}
+would you please execute a race route from {second server|device|source} to {first access switch|device|destination}
+i need to do a race route from {first switch|device|source} to {second access switch|device|destination}
+i need to perform a race route from {second switch|device|source} to {router|device|destination}
+i need to execute a race route from {left switch|device|source} to {first server|device|destination}
+i'd like to do a race route from {right switch|device|source} to {second server|device|destination}
+i'd like to perform a race route from {left server|device|source} to {core switch|device|destination}
+i'd like to execute a race route from {right server|device|source} to {router|device|destination}
+trade route from {server 2|device|source} to {access switch 1|device|destination}
+do a trade route from {router|device|source} to {access switch 2|device|destination}
+perform a trade route from {server 1|device|source} to {switch on the right|device|destination}
+execute a trade route from {router|device|source} to {switch left|device|destination}
+execute a trade route from {core switch|device|source} to {router|device|destination}
+please do a trade route from {router|device|source} to {server 1|device|destination}
+please perform a trade route from {access switch 1|device|source} to {server 2|device|destination}
+please execute a trade route from {core switch|device|source} to {first switch|device|destination}
+would you please do a trade route from {server 1|device|source} to {first server|device|destination}
+would you please perform a trade route from {first server|device|source} to {core switch|device|destination}
+would you please execute a trade route from {second server|device|source} to {first access switch|device|destination}
+i need to do a trade route from {first switch|device|source} to {second access switch|device|destination}
+i need to perform a trade route from {second switch|device|source} to {router|device|destination}
+i need to execute a trade route from {left switch|device|source} to {first server|device|destination}
+i'd like to do a trade route from {right switch|device|source} to {second server|device|destination}
+i'd like to perform a trade route from {left server|device|source} to {core switch|device|destination}
+i'd like to execute a trade route from {right server|device|source} to {router|device|destination}
+RaceTrac from {server 2|device|source} to {access switch 1|device|destination}
+do a RaceTrac from {router|device|source} to {access switch 2|device|destination}
+perform a RaceTrac from {server 1|device|source} to {switch on the right|device|destination}
+execute a RaceTrac from {router|device|source} to {switch left|device|destination}
+execute a RaceTrac from {core switch|device|source} to {router|device|destination}
+please do a RaceTrac from {router|device|source} to {server 1|device|destination}
+please perform a RaceTrac from {access switch 1|device|source} to {server 2|device|destination}
+please execute a RaceTrac from {core switch|device|source} to {first switch|device|destination}
+would you please do a RaceTrac from {server 1|device|source} to {first server|device|destination}
+would you please perform a RaceTrac from {first server|device|source} to {core switch|device|destination}
+would you please execute a RaceTrac from {second server|device|source} to {first access switch|device|destination}
+i need to do a RaceTrac from {first switch|device|source} to {second access switch|device|destination}
+i need to perform a RaceTrac from {second switch|device|source} to {router|device|destination}
+i need to execute a RaceTrac from {left switch|device|source} to {first server|device|destination}
+i'd like to do a RaceTrac from {right switch|device|source} to {second server|device|destination}
+i'd like to perform a RaceTrac from {left server|device|source} to {core switch|device|destination}
+i'd like to execute a RaceTrac from {right server|device|source} to {router|device|destination}
+Trace road from {server 2|device|source} to {access switch 1|device|destination}
+do a Trace road from {router|device|source} to {access switch 2|device|destination}
+perform a Trace road from {server 1|device|source} to {switch on the right|device|destination}
+execute a Trace road from {router|device|source} to {switch left|device|destination}
+execute a Trace road from {core switch|device|source} to {router|device|destination}
+please do a Trace road from {router|device|source} to {server 1|device|destination}
+please perform a Trace road from {access switch 1|device|source} to {server 2|device|destination}
+please execute a Trace road from {core switch|device|source} to {first switch|device|destination}
+would you please do a Trace road from {server 1|device|source} to {first server|device|destination}
+would you please perform a Trace road from {first server|device|source} to {core switch|device|destination}
+would you please execute a Trace road from {second server|device|source} to {first access switch|device|destination}
+i need to do a Trace road from {first switch|device|source} to {second access switch|device|destination}
+i need to perform a Trace road from {second switch|device|source} to {router|device|destination}
+i need to execute a Trace road from {left switch|device|source} to {first server|device|destination}
+i'd like to do a Trace road from {right switch|device|source} to {second server|device|destination}
+i'd like to perform a Trace road from {left server|device|source} to {core switch|device|destination}
+i'd like to execute a Trace road from {right server|device|source} to {router|device|destination}
+trade show from {server 2|device|source} to {access switch 1|device|destination}
+do a trade show from {router|device|source} to {access switch 2|device|destination}
+perform a trade show from {server 1|device|source} to {switch on the right|device|destination}
+execute a trade show from {router|device|source} to {switch left|device|destination}
+execute a trade show from {core switch|device|source} to {router|device|destination}
+please do a trade show from {router|device|source} to {server 1|device|destination}
+please perform a trade show from {access switch 1|device|source} to {server 2|device|destination}
+please execute a trade show from {core switch|device|source} to {first switch|device|destination}
+would you please do a trade show from {server 1|device|source} to {first server|device|destination}
+would you please perform a trade show from {first server|device|source} to {core switch|device|destination}
+would you please execute a trade show from {second server|device|source} to {first access switch|device|destination}
+i need to do a trade show from {first switch|device|source} to {second access switch|device|destination}
+i need to perform a trade show from {second switch|device|source} to {router|device|destination}
+i need to execute a trade show from {left switch|device|source} to {first server|device|destination}
+i'd like to do a trade show from {right switch|device|source} to {second server|device|destination}
+i'd like to perform a trade show from {left server|device|source} to {core switch|device|destination}
+i'd like to execute a trade show from {right server|device|source} to {router|device|destination}
+tracer from {server 2|device|source} to {access switch 1|device|destination}
+do a tracer from {router|device|source} to {access switch 2|device|destination}
+perform a tracer from {server 1|device|source} to {switch on the right|device|destination}
+execute a tracer from {router|device|source} to {switch left|device|destination}
+execute a tracer from {core switch|device|source} to {router|device|destination}
+please do a tracer from {router|device|source} to {server 1|device|destination}
+please perform a tracer from {access switch 1|device|source} to {server 2|device|destination}
+please execute a tracer from {core switch|device|source} to {first switch|device|destination}
+would you please do a tracer from {server 1|device|source} to {first server|device|destination}
+would you please perform a tracer from {first server|device|source} to {core switch|device|destination}
+would you please execute a tracer from {second server|device|source} to {first access switch|device|destination}
+i need to do a tracer from {first switch|device|source} to {second access switch|device|destination}
+i need to perform a tracer from {second switch|device|source} to {router|device|destination}
+i need to execute a tracer from {left switch|device|source} to {first server|device|destination}
+i'd like to do a tracer from {right switch|device|source} to {second server|device|destination}
+i'd like to perform a tracer from {left server|device|source} to {core switch|device|destination}
+i'd like to execute a tracer from {right server|device|source} to {router|device|destination}
+Tresor from {server 2|device|source} to {access switch 1|device|destination}
+do a Tresor from {router|device|source} to {access switch 2|device|destination}
+perform a Tresor from {server 1|device|source} to {switch on the right|device|destination}
+execute a Tresor from {router|device|source} to {switch left|device|destination}
+execute a Tresor from {core switch|device|source} to {router|device|destination}
+please do a Tresor from {router|device|source} to {server 1|device|destination}
+please perform a Tresor from {access switch 1|device|source} to {server 2|device|destination}
+please execute a Tresor from {core switch|device|source} to {first switch|device|destination}
+would you please do a Tresor from {server 1|device|source} to {first server|device|destination}
+would you please perform a Tresor from {first server|device|source} to {core switch|device|destination}
+would you please execute a Tresor from {second server|device|source} to {first access switch|device|destination}
+i need to do a Tresor from {first switch|device|source} to {second access switch|device|destination}
+i need to perform a Tresor from {second switch|device|source} to {router|device|destination}
+i need to execute a Tresor from {left switch|device|source} to {first server|device|destination}
+i'd like to do a Tresor from {right switch|device|source} to {second server|device|destination}
+i'd like to perform a Tresor from {left server|device|source} to {core switch|device|destination}
+i'd like to execute a Tresor from {right server|device|source} to {router|device|destination}
