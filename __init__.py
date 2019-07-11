@@ -318,28 +318,92 @@ def health_rule_violation():
         for event in events:
             if event["type"] == "POLICY_OPEN_CRITICAL":
                 health_rule_violation = True
-    return health_rule_violation
+    #return health_rule_violation  - Workaround while the AppD API issue is fixed.
+    return True
 
 
 def get_calls_per_min():
 
-    appd_url = "https://altusconsulting.saas.appdynamics.com/controller/rest/applications/MyNodeApp/metric-data"
-    querystring = {"output":"JSON","rollup":"false","metric-path":"Overall Application Performance|Calls per Minute","time-range-type":"BEFORE_NOW","duration-in-mins":"60"}
-    payload = ""
-    headers = {
-        'Authorization': "Bearer eyJraWQiOiIxIiwiYWxnIjoiSFMyNTYifQ.eyJpc3MiOiJBcHBEeW5hbWljcyIsImF1ZCI6IkFwcERfQVBJcyIsImV4cCI6MTU4ODg4MzQ4OSwianRpIjoiVXdtdnBtMGF3ZHVCQW9UbHM5WGMwdyIsImlhdCI6MTU1NzM0NzQ4OSwibmJmIjoxNTU3MzQ3MzY5LCJzdWIiOiJhcGl1c2VyIiwidHlwZSI6IkFQSV9DTElFTlQiLCJpZCI6ImI4OWJlNGJhLTVmYmMtNDJkYy1hNzU2LThjZDRlZTBlNDdjZiIsImFjY3RJZCI6ImIwYmJmMDZkLTZlZDMtNDI4YS1hYTgwLThkMDMwODI0NzNhYiIsImFjY3ROYW1lIjoiYWx0dXNjb25zdWx0aW5nIn0.PMKUS5bwHpgWwMwmpp5IO4As56IW52yp5Xm8URWoNw0",
-        'Accept': "*/*",
-        'Host': "altusconsulting.saas.appdynamics.com",
-        'cache-control': "no-cache"
-        }
-    response = requests.request("GET", appd_url, data=payload, headers=headers, params=querystring)
-    metrics = response.json()
-    metrics = metrics[0]["metricValues"]
-    values = []
-    for metric in metrics:
-        value = metric["value"]
-        values.append(value)
-    
+    # appd_url = "https://altusconsulting.saas.appdynamics.com/controller/rest/applications/MyNodeApp/metric-data"
+    # querystring = {"output":"JSON","rollup":"false","metric-path":"Overall Application Performance|Calls per Minute","time-range-type":"BEFORE_NOW","duration-in-mins":"60"}
+    # payload = ""
+    # headers = {
+    #     'Authorization': "Bearer eyJraWQiOiIxIiwiYWxnIjoiSFMyNTYifQ.eyJpc3MiOiJBcHBEeW5hbWljcyIsImF1ZCI6IkFwcERfQVBJcyIsImV4cCI6MTU4ODg4MzQ4OSwianRpIjoiVXdtdnBtMGF3ZHVCQW9UbHM5WGMwdyIsImlhdCI6MTU1NzM0NzQ4OSwibmJmIjoxNTU3MzQ3MzY5LCJzdWIiOiJhcGl1c2VyIiwidHlwZSI6IkFQSV9DTElFTlQiLCJpZCI6ImI4OWJlNGJhLTVmYmMtNDJkYy1hNzU2LThjZDRlZTBlNDdjZiIsImFjY3RJZCI6ImIwYmJmMDZkLTZlZDMtNDI4YS1hYTgwLThkMDMwODI0NzNhYiIsImFjY3ROYW1lIjoiYWx0dXNjb25zdWx0aW5nIn0.PMKUS5bwHpgWwMwmpp5IO4As56IW52yp5Xm8URWoNw0",
+    #     'Accept': "*/*",
+    #     'Host': "altusconsulting.saas.appdynamics.com",
+    #     'cache-control': "no-cache"
+    #     }
+    # response = requests.request("GET", appd_url, data=payload, headers=headers, params=querystring)
+    # metrics = response.json()
+    # metrics = metrics[0]["metricValues"]
+    # values = []
+    # for metric in metrics:
+    #     value = metric["value"]
+    #     values.append(value)
+
+    #Workaround while the AppD API issue is fixed
+    values = [
+        1643,
+        1441,
+        1391,
+        1369,
+        1390,
+        1545,
+        1653,
+        1575,
+        1463,
+        1333,
+        1435,
+        1453,
+        1310,
+        1469,
+        1515,
+        2551,
+        3362,
+        3217,
+        2111,
+        1310,
+        1294,
+        1387,
+        1336,
+        1328,
+        1550,
+        1504,
+        1482,
+        1626,
+        1680,
+        1611,
+        1558,
+        1423,
+        1488,
+        1449,
+        1318,
+        1488,
+        1517,
+        1372,
+        1383,
+        1571,
+        1611,
+        1560,
+        1626,
+        1545,
+        1572,
+        1579,
+        1401,
+        1351,
+        1445,
+        1597,
+        1679,
+        1580,
+        1337,
+        1297,
+        1510,
+        1456,
+        1417,
+        1467,
+        1374,
+        1516,
+    ]
     graph_url = "http://localhost:5000/graphs"
     payload = {"graph_type": "appd",
                "data": values,
