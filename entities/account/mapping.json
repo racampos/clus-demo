@@ -1,0 +1,83 @@
+{
+    "entities": [
+        {
+            "whitelist": [
+                "oil and gas",
+                "united oil",
+                "united oil and gas",
+                "oil and gas corp",
+                "united oil and gas corp",
+                "united oril and gas corporation",
+                "oil and gas corporation",
+                "united corporation"
+            ],
+            "cname": "United Oil & Gas Corp",
+            "id": "001j000000B08cFAAR"
+        },
+        {
+            "whitelist": [
+                "dickenson",
+                "dickenson plc"
+            ],
+            "cname": "Dickenson plc",
+            "id": "001j000000B08cBAAR"
+        },
+        {
+            "whitelist": [
+                "genepoint",
+                "gene point"
+            ],
+            "cname": "GenePoint",
+            "id": "001j000000B08c5AAB"
+        },
+        {
+            "whitelist": [
+                "university of arizona",
+                "arizona university"
+            ],
+            "cname": "University of Arizona",
+            "id": "001j000000B08cEAAR"
+        },
+        {
+            "whitelist": [
+                "edge communications",
+                "edge comm",
+                "edge"
+            ],
+            "cname": "Edge Communications",
+            "id": "001j000000B08c8AAB"
+        },
+        {
+            "whitelist": [
+                "express logistics and transport",
+                "express logistics",
+                "logistics and transport"
+            ],
+            "cname": "Express Logistics and Transport",
+            "id": "001j000000B08cDAAR"
+        },
+        {
+            "whitelist": [
+                "burlington textiles corp of america",
+                "burlington textiles",
+                "burlington",
+                "burlington of america",
+                "burlington corp",
+                "burlington corporation",
+                "burlington corporation of america"
+            ],
+            "cname": "Burlington Textiles Corp of America",
+            "id": "001j000000B08c9AAB"
+        },
+        {
+            "whitelist": [
+                "grand hotels and resorts limited",
+                "grand hotels and resorts",
+                "grand hotels",
+                "hotels and resorts limited",
+                "grand hotels and resorts llc"
+            ],
+            "cname": "Grand Hotels & Resorts Ltd",
+            "id": "001j000000B08cCAAR"
+        }
+    ]}

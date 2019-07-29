@@ -252,7 +252,7 @@ def resource_status(request, responder):
         if resource == "network":
             replies = ["There's a problem with you network."]
         elif resource == "applications":
-            if health_rule_violation():
+            if True: #health_rule_violation():
                 graph_url = get_calls_per_min()
                 payload = {"url": graph_url}
                 reply = "There's an issue with your application. Here is a graph of your application's performance over the last 60 minutes."
@@ -302,22 +302,22 @@ def get_app_perf():
 
 def health_rule_violation():
 
-    appd_url = "https://altusconsulting.saas.appdynamics.com/controller/rest/applications/49309/events"
-    querystring = {"output":"JSON","time-range-type":"BEFORE_NOW","duration-in-mins":"60","event-types":"APPLICATION_ERROR,APP_SERVER_RESTART,APPLICATION_CONFIG_CHANGE,POLICY_OPEN_CRITICAL","severities":"INFO,WARN,ERROR"}
-    payload = ""
-    headers = {
-        'Authorization': "Bearer eyJraWQiOiIxIiwiYWxnIjoiSFMyNTYifQ.eyJpc3MiOiJBcHBEeW5hbWljcyIsImF1ZCI6IkFwcERfQVBJcyIsImV4cCI6MTU4ODg4MzQ4OSwianRpIjoiVXdtdnBtMGF3ZHVCQW9UbHM5WGMwdyIsImlhdCI6MTU1NzM0NzQ4OSwibmJmIjoxNTU3MzQ3MzY5LCJzdWIiOiJhcGl1c2VyIiwidHlwZSI6IkFQSV9DTElFTlQiLCJpZCI6ImI4OWJlNGJhLTVmYmMtNDJkYy1hNzU2LThjZDRlZTBlNDdjZiIsImFjY3RJZCI6ImIwYmJmMDZkLTZlZDMtNDI4YS1hYTgwLThkMDMwODI0NzNhYiIsImFjY3ROYW1lIjoiYWx0dXNjb25zdWx0aW5nIn0.PMKUS5bwHpgWwMwmpp5IO4As56IW52yp5Xm8URWoNw0",
-        'Accept': "*/*",
-        'Host': "altusconsulting.saas.appdynamics.com",
-        'cache-control': "no-cache"
-        }
-    response = requests.request("GET", appd_url, data=payload, headers=headers, params=querystring)
-    events = response.json()
-    health_rule_violation = False
-    if len(events) > 0:
-        for event in events:
-            if event["type"] == "POLICY_OPEN_CRITICAL":
-                health_rule_violation = True
+    # appd_url = "https://altusconsulting.saas.appdynamics.com/controller/rest/applications/49309/events"
+    # querystring = {"output":"JSON","time-range-type":"BEFORE_NOW","duration-in-mins":"60","event-types":"APPLICATION_ERROR,APP_SERVER_RESTART,APPLICATION_CONFIG_CHANGE,POLICY_OPEN_CRITICAL","severities":"INFO,WARN,ERROR"}
+    # payload = ""
+    # headers = {
+    #     'Authorization': "Bearer eyJraWQiOiIxIiwiYWxnIjoiSFMyNTYifQ.eyJpc3MiOiJBcHBEeW5hbWljcyIsImF1ZCI6IkFwcERfQVBJcyIsImV4cCI6MTU4ODg4MzQ4OSwianRpIjoiVXdtdnBtMGF3ZHVCQW9UbHM5WGMwdyIsImlhdCI6MTU1NzM0NzQ4OSwibmJmIjoxNTU3MzQ3MzY5LCJzdWIiOiJhcGl1c2VyIiwidHlwZSI6IkFQSV9DTElFTlQiLCJpZCI6ImI4OWJlNGJhLTVmYmMtNDJkYy1hNzU2LThjZDRlZTBlNDdjZiIsImFjY3RJZCI6ImIwYmJmMDZkLTZlZDMtNDI4YS1hYTgwLThkMDMwODI0NzNhYiIsImFjY3ROYW1lIjoiYWx0dXNjb25zdWx0aW5nIn0.PMKUS5bwHpgWwMwmpp5IO4As56IW52yp5Xm8URWoNw0",
+    #     'Accept': "*/*",
+    #     'Host': "altusconsulting.saas.appdynamics.com",
+    #     'cache-control': "no-cache"
+    #     }
+    # response = requests.request("GET", appd_url, data=payload, headers=headers, params=querystring)
+    # events = response.json()
+    # health_rule_violation = False
+    # if len(events) > 0:
+    #     for event in events:
+    #         if event["type"] == "POLICY_OPEN_CRITICAL":
+    #             health_rule_violation = True
     #return health_rule_violation  - Workaround while the AppD API issue is fixed.
     return True
 
@@ -498,3 +498,125 @@ def simplify_type(type):
         return "server"
     else:
         return "unknown"
+
+
+
+####################################################################################
+# Salesforce IMPACT Use Case
+####################################################################################
+
+# Salesforce Authentication
+def get_sf_jwt_token():
+    sf_auth_url = "https://na103.salesforce.com/services/oauth2/token"
+    sf_auth_headers = {'Content-Type': "application/x-www-form-urlencoded"}
+    payload = "username=rcampos%40altus.cr&client_id=3MVG9fMtCkV6eLhcBmzxZLPGzGet0kRYG1YKMVXi8PQo1.1sTybvOWzKpKv5RckNsZGW7crwEuG_a9lWOr_GI&client_secret=3031502127221271970&grant_type=password&password=Cisco123!HMkQGnSzZTL4A2FDTDezAD49"
+    response = requests.request("POST", sf_auth_url, data=payload, headers=sf_auth_headers)
+    return json.loads(response.text)["access_token"]
+
+
+def soql_query(account_id, type):
+    sf_token = get_sf_jwt_token()
+    sf_base_url = "https://na103.salesforce.com/services/data/v44.0"
+    headers = {
+        'Authorization': "Bearer " + sf_token,
+        'Content-Type': "application/json",
+        'cache-control': "no-cache"
+    }
+    queries = {
+        "contacts": "SELECT+Id,+Name,+Title+FROM+Contact+where+Account.Id+=+'{}'",
+        "oppts": "SELECT+Name,+Amount,+StageName,+CloseDate+FROM+Opportunity+where+Account.Id+=+'{}'",
+        "notes": "Select+Title,+Body+from+Note+where+ParentId+=+'{}'"
+    }
+    query = queries[type].format(account_id)
+    soql_url = sf_base_url + "/query?q={}".format(query)
+    response = requests.request("GET", soql_url, headers=headers)
+    return json.loads(response.text)["records"]
+
+
+def get_sf_object(object_type, object_id):
+    sf_token = get_sf_jwt_token()
+    sf_base_url = "https://na103.salesforce.com/services/data/v44.0"
+    headers = {
+        'Authorization': "Bearer " + sf_token,
+        'Content-Type': "application/json",
+        'cache-control': "no-cache"
+    }
+    url = "{}/sobjects/{}/{}".format(sf_base_url, object_type, object_id)
+    response = requests.request("GET", url, headers=headers)
+    return json.loads(response.text)
+
+
+@app.handle(intent='acct-summary')
+def show_acct_summary(request, responder):
+
+    account = next((e for e in request.entities), None)
+    if account:
+        account_id = account['value'][0]['id']
+        account = account['value'][0]['cname']
+        responder.frame['account'] = account
+        responder.frame['account_id'] = account_id
+
+    # Retrieving general account info
+    acct_info = get_sf_object("Account", account_id)
+    print(acct_info["Phone"])
+    acct_info = {
+        "name": acct_info["Name"],
+        "acct_number": acct_info["AccountNumber"],
+        "type": acct_info["Type"],
+        "industry": acct_info["Industry"],
+        "description": acct_info["Description"],
+        "rating": acct_info["Rating"],
+        "phone": acct_info["Phone"],
+        "website": acct_info["Website"],
+        "employees": acct_info["NumberOfEmployees"],
+        "sla": acct_info["SLA__c"],
+    }
+
+    # Retrieving contacts
+    contacts = soql_query(account_id, "contacts")
+    contact_list = []
+    for contact in contacts:
+        contact_list.append({
+                "name": contact["Name"],
+                "title": contact["Title"]
+                })
+
+    # Retrieving oppts
+    opportunities = soql_query(account_id, "oppts")
+    oppt_list = []
+    for oppt in opportunities:
+        oppt_list.append({
+            "name": oppt["Name"],
+            "amount": oppt["Amount"],
+            "stage": oppt["StageName"],
+            "close_date": oppt["CloseDate"]
+        })
+
+    # Retrieving notes
+    notes = soql_query(account_id, "notes")
+    note_list = []
+    for note in notes:
+        note_list.append({
+            "title": note["Title"],
+            "body": note["Body"]
+        })
+    
+
+    graph_url = "http://localhost:5000/graphs"
+    payload = {"graph_type": "salesforce",
+               "acct_info": acct_info,
+               "contacts": contact_list,
+               "oppts": oppt_list,
+               "notes": note_list
+            }
+    headers = {"Content-Type": "application/json"}
+    response = requests.request("POST", graph_url, data=json.dumps(payload), headers=headers)
+    graph_url = response.text
+    payload = {"url": graph_url}
+    #payload = {"contacts": contact_list, "oppts": oppt_list, "notes": note_list}
+    reply = "Here is the requested account summary."    
+
+    responder.act("display-web-view", payload=payload)
+    responder.reply(text=reply)
+    responder.speak(text=reply)
+    responder.act('sleep')
