@@ -1,0 +1,18 @@
+amount
+close date
+stage
+price
+date of close
+state
+cost
+size
+maturity
+closing likelihood
+sale price
+date of closing
+date
+name
+account
+account name
+customer
+client

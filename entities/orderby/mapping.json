@@ -1,0 +1,42 @@
+{
+    "entities": [
+        {
+            "whitelist": [
+                "client",
+                "customer",
+                "name",
+                "account name",
+                "account"
+            ],
+            "cname": "account"
+        },
+        {
+            "whitelist": [
+                "price",
+                "size",
+                "cost",
+                "sale price",
+                "amount"
+            ],
+            "cname": "amount"
+        },
+        {
+            "whitelist": [
+                "date of close",
+                "date of closing",
+                "date",
+                "close date"
+            ],
+            "cname": "close_date"
+        },
+        {
+            "whitelist": [
+                "state",
+                "maturity",
+                "closing likelihood",
+                "stage"
+            ],
+            "cname": "stage"
+        }
+    ]
+}

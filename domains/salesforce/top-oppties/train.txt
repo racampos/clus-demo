@@ -1,0 +1,80 @@
+show me the top {10|sys_number} opportunities
+give me the top {5|sys_number} opportunities
+what are the top {3|sys_number} opportunities across all accounts
+show me the biggest {15|sys_number} opportunities
+give me the biggest {20|sys_number} opportunities
+what are the biggest {2|sys_number} opportunities across all accounts
+show me the largest {5|sys_number} opportunities
+give me the largest {12|sys_number} opportunities
+what are the largest {8|sys_number} opportunities across all accounts
+I'd like to know the top {10|sys_number} opportunities
+I'd like to know the biggest {3|sys_number} opportunities
+I'd like to know the largest {5|sys_number} opportunities
+show me the top {ten|sys_number} opportunities
+give me the top {five|sys_number} opportunities
+what are the top {three|sys_number} opportunities across all accounts
+show me the biggest {fifteen|sys_number} opportunities
+give me the biggest {twenty|sys_number} opportunities
+what are the biggest {two|sys_number} opportunities across all accounts
+show me the largest {five|sys_number} opportunities
+give me the largest {twelve|sys_number} opportunities
+what are the largest {eight|sys_number} opportunities across all accounts
+I'd like to know the top {ten|sys_number} opportunities
+I'd like to know the biggest {three|sys_number} opportunities
+I'd like to know the largest {five|sys_number} opportunities
+show me the top {10|sys_number} opportunities for account {Burlington Textiles|account}
+give me the top {5|sys_number} opportunities for account {EdgeComm|account}
+what are the top {3|sys_number} opportunities for {Express Logistics and Transport|account}
+show me the biggest {15|sys_number} opportunities for account {University of Arizona|account}
+give me the biggest {20|sys_number} opportunities for account {Grand Hotels & Resorts|account}
+what are the biggest {2|sys_number} opportunities for {University of Arizona|account}
+show me the largest {5|sys_number} opportunities for account {Burlington Textiles|account}
+give me the largest {12|sys_number} opportunities for account {United Oil & Gas|account}
+what are the largest {8|sys_number} opportunities for {University of Arizona|account}
+I'd like to know the top {10|sys_number} opportunities for account {Edge Communications|account}
+I'd like to know the biggest {3|sys_number} opportunities for account {Express Logistics and Transport|account}
+I'd like to know the largest {5|sys_number} opportunities for account {Edge Communications|account}
+show me the top {ten|sys_number} opportunities for account {United Oil & Gas|account}
+give me the top {five|sys_number} opportunities for account {University of Arizona|account}
+what are the top {three|sys_number} opportunities for {University of Arizona|account}
+show me the biggest {fifteen|sys_number} opportunities for account {Grand Hotels & Resorts|account}
+give me the biggest {twenty|sys_number} opportunities for account {University of Arizona|account}
+what are the biggest {two|sys_number} opportunities for {Edge Communications|account}
+show me the largest {five|sys_number} opportunities for account {Express Logistics and Transport|account}
+give me the largest {twelve|sys_number} opportunities for account {University of Arizona|account}
+what are the largest {eight|sys_number} opportunities for {Burlington Textiles|account}
+I'd like to know the top {ten|sys_number} opportunities for account {Grand Hotels & Resorts|account}
+I'd like to know the biggest {three|sys_number} opportunities for account {United Oil & Gas|account}
+I'd like to know the largest {five|sys_number} opportunities for account {University of Arizona|account}
+show me the top {10|sys_number} opportunities order by {stage|orderby}
+give me the top {5|sys_number} opportunities orderby {amount|orderby}
+what are the top {3|sys_number} opportunities across all accounts orderby {close date|orderby}
+show me the biggest {15|sys_number} opportunities ordered by {stage|orderby}
+give me the biggest {20|sys_number} opportunities order by {amount|orderby}
+what are the biggest {2|sys_number} opportunities across all accounts order by {close date|orderby}
+show me the largest {5|sys_number} opportunities ordered by {stage|orderby}
+give me the largest {12|sys_number} opportunities order edby {amount|orderby}
+what are the largest {8|sys_number} opportunities across all accounts order by {close date|orderby}
+I'd like to know the top {10|sys_number} opportunities order by {stage|orderby}
+I'd like to know the biggest {3|sys_number} opportunities order by {amount|orderby}
+I'd like to know the largest {5|sys_number} opportunities order by {close date|orderby}
+show me the top {ten|sys_number} opportunities order by {stage|orderby}
+give me the top {five|sys_number} opportunities order by {amount|orderby}
+what are the top {three|sys_number} opportunities across all accounts order by {close date|orderby}
+show me the biggest {fifteen|sys_number} opportunities ordered by {stage|orderby}
+give me the biggest {twenty|sys_number} opportunities order by {amount|orderby}
+what are the biggest {two|sys_number} opportunities across all accounts orderby {close date|orderby}
+show me the largest {five|sys_number} opportunities order by {stage|orderby}
+give me the largest {twelve|sys_number} opportunities order by {amount|orderby}
+what are the largest {eight|sys_number} opportunities across all accounts order by {close date|orderby}
+I'd like to know the top {ten|sys_number} opportunities order by {stage|orderby}
+I'd like to know the biggest {three|sys_number} opportunities ordered by {amount|orderby}
+I'd like to know the largest {five|sys_number} opportunities order by {close date|orderby}show me the top {10|sys_number} opportunities
+give me the top {5|sys_number} opportunities ordered by {account|orderby}
+what are the top {3|sys_number} opportunities across all accounts order by {account|orderby}
+show me the biggest {15|sys_number} opportunities ordered by {customer|orderby}
+give me the biggest {20|sys_number} opportunities ordered by {name|orderby}
+what are the biggest {2|sys_number} opportunities across all accounts ordered by {account name|orderby}
+show me the largest {5|sys_number} opportunities ordered by {client|orderby}
+give me the largest {12|sys_number} opportunities ordered by {price|orderby}
+what are the largest {8|sys_number} opportunities across all accounts order by {size|orderby}

@@ -32,6 +32,12 @@ dev = {
         "10.10.22.114": "Server 2"
     }
 
+def get_webview_url(params):
+    graph_url = "http://localhost:5000/graphs"
+    headers = {"Content-Type": "application/json"}
+    response = requests.request("POST", graph_url, data=json.dumps(params), headers=headers)
+    return response.text
+
 
 @app.handle(default=True)
 @app.handle(intent='unsupported')
@@ -196,10 +202,6 @@ def do_path_trace_followup(request, responder):
     responder.reply(text=reply)
     responder.speak(text=reply)
     responder.act('sleep')
-    
-
-    
-    
 
 
 @app.handle(intent='open-ticket')
@@ -505,6 +507,8 @@ def simplify_type(type):
 # Salesforce IMPACT Use Case
 ####################################################################################
 
+sf_base_url = "https://na103.salesforce.com/services/data/v44.0"
+
 # Salesforce Authentication
 def get_sf_jwt_token():
     sf_auth_url = "https://na103.salesforce.com/services/oauth2/token"
@@ -514,9 +518,8 @@ def get_sf_jwt_token():
     return json.loads(response.text)["access_token"]
 
 
-def soql_query(account_id, type):
+def soql_query_acct(account_id, type):
     sf_token = get_sf_jwt_token()
-    sf_base_url = "https://na103.salesforce.com/services/data/v44.0"
     headers = {
         'Authorization': "Bearer " + sf_token,
         'Content-Type': "application/json",
@@ -535,7 +538,6 @@ def soql_query(account_id, type):
 
 def get_sf_object(object_type, object_id):
     sf_token = get_sf_jwt_token()
-    sf_base_url = "https://na103.salesforce.com/services/data/v44.0"
     headers = {
         'Authorization': "Bearer " + sf_token,
         'Content-Type': "application/json",
@@ -544,6 +546,18 @@ def get_sf_object(object_type, object_id):
     url = "{}/sobjects/{}/{}".format(sf_base_url, object_type, object_id)
     response = requests.request("GET", url, headers=headers)
     return json.loads(response.text)
+
+def create_sf_object(object_type, payload):
+    sf_token = get_sf_jwt_token()
+    headers = {
+        'Authorization': "Bearer " + sf_token,
+        'Content-Type': "application/json",
+        'cache-control': "no-cache"
+    }
+    url = "{}/sobjects/{}".format(sf_base_url, object_type)
+    response = requests.request("POST", url, data=payload, headers=headers)
+    res = json.loads(response.text)
+    return res["success"]
 
 
 @app.handle(intent='acct-summary')
@@ -558,7 +572,6 @@ def show_acct_summary(request, responder):
 
     # Retrieving general account info
     acct_info = get_sf_object("Account", account_id)
-    print(acct_info["Phone"])
     acct_info = {
         "name": acct_info["Name"],
         "acct_number": acct_info["AccountNumber"],
@@ -573,7 +586,7 @@ def show_acct_summary(request, responder):
     }
 
     # Retrieving contacts
-    contacts = soql_query(account_id, "contacts")
+    contacts = soql_query_acct(account_id, "contacts")
     contact_list = []
     for contact in contacts:
         contact_list.append({
@@ -582,7 +595,7 @@ def show_acct_summary(request, responder):
                 })
 
     # Retrieving oppts
-    opportunities = soql_query(account_id, "oppts")
+    opportunities = soql_query_acct(account_id, "oppts")
     oppt_list = []
     for oppt in opportunities:
         oppt_list.append({
@@ -593,7 +606,7 @@ def show_acct_summary(request, responder):
         })
 
     # Retrieving notes
-    notes = soql_query(account_id, "notes")
+    notes = soql_query_acct(account_id, "notes")
     note_list = []
     for note in notes:
         note_list.append({
@@ -601,22 +614,129 @@ def show_acct_summary(request, responder):
             "body": note["Body"]
         })
     
-
-    graph_url = "http://localhost:5000/graphs"
-    payload = {"graph_type": "salesforce",
+    # Generating the return URL for webview
+    params = {"graph_type": "sf_acct_sum",
                "acct_info": acct_info,
                "contacts": contact_list,
                "oppts": oppt_list,
                "notes": note_list
             }
-    headers = {"Content-Type": "application/json"}
-    response = requests.request("POST", graph_url, data=json.dumps(payload), headers=headers)
-    graph_url = response.text
-    payload = {"url": graph_url}
-    #payload = {"contacts": contact_list, "oppts": oppt_list, "notes": note_list}
+    webview_payload = {"url": get_webview_url(params)}
+
+    # Responding query
     reply = "Here is the requested account summary."    
 
-    responder.act("display-web-view", payload=payload)
+    responder.act("display-web-view", payload=webview_payload)
+    responder.reply(text=reply)
+    responder.speak(text=reply)
+    responder.act('sleep')
+
+
+@app.handle(intent='add_note')
+def add_note(request, responder):
+
+    account = next((e for e in request.entities), None)
+    if account:
+        account_id = account['value'][0]['id']
+        account = account['value'][0]['cname']
+        responder.frame['account'] = account
+        responder.frame['account_id'] = account_id
+
+    #responder.params.allowed_intents = ['add_note_followup']
+    responder.params.target_dialogue_state = 'add_note_followup'
+    reply = "What note would you like to add to this account?"
+    
+    responder.reply(text=reply)
+    responder.speak(text=reply)
+    responder.act('listen')
+    
+    
+# @app.handle(intent='add_note_followup')
+# def add_note_followup(request, responder):
+
+#     payload = json.dumps({"ParentId": request.frame['account_id'],
+#                           "Title": "Webex Assistant Note",
+#                           "Body": request.text
+#                          })
+
+#     res = create_sf_object("Note", payload)
+
+@app.handle(targeted_only=True)
+def add_note_followup(request, responder):
+    payload = json.dumps({"ParentId": request.frame['account_id'],
+                          "Title": "Webex Assistant Note",
+                          "Body": request.text
+                         })
+
+    res = create_sf_object("Note", payload)
+
+    if res:
+        reply = "Your note was successully added."
+    else:
+        reply = "There was a problem adding your note."
+    
+    responder.reply(text=reply)
+    responder.speak(text=reply)
+    responder.act('sleep')
+
+
+
+def soql_query_top_oppt(account, orderby, topn):
+    sf_token = get_sf_jwt_token()
+    headers = {
+        'Authorization': "Bearer " + sf_token,
+        'Content-Type': "application/json",
+        'cache-control': "no-cache"
+    }
+    if account:
+        query = "Select+Account.Name,Name,+Amount,+StageName,+CloseDate+from+Opportunity+where+Account.Id+=+'{}'+order+by+{}+LIMIT+{}".format(account['value'][0]['id'], orderby, topn)
+    else:
+        query = "Select+Account.Name,Name,+Amount,+StageName,+CloseDate+from+Opportunity+order+by+{}+LIMIT+{}".format(orderby, topn)
+    
+    soql_url = sf_base_url + "/query?q={}".format(query)
+    response = requests.request("GET", soql_url, headers=headers)
+    return json.loads(response.text)["records"]
+
+
+@app.handle(intent='top-oppties')
+def top_oppties(request, responder):
+
+    topn = next((e['value'][0]['value'] for e in request.entities if e['type'] == 'sys_number'), 10)
+    account = next((e for e in request.entities if e['type'] == 'account'), None)
+    orderby = next((e['value'][0]['cname'] for e in request.entities if e['type'] == 'orderby'), None)
+    specific_account = account != None
+    if orderby == "account":
+        orderby = "Account.Name+asc"
+    elif orderby == "stage":
+        orderby = "StageName+desc"
+    elif orderby == "close_date":
+        orderby = "CloseDate+desc"
+    else: 
+        orderby = "Amount+desc"
+
+    top_oppts = soql_query_top_oppt(account, orderby, topn)
+    oppt_list = []
+    for oppt in top_oppts:
+        oppt_list.append({                        
+                        "account": oppt["Account"]["Name"],
+                        "name": oppt["Name"],
+                        "amount": oppt["Amount"],
+                        "stage": oppt["StageName"],
+                        "close_date": oppt["CloseDate"]
+                        })
+
+    params = {"graph_type": "sf_top_oppties",
+              "top_oppties": oppt_list,
+              "topn": topn,
+              "specific_account": specific_account
+             }
+
+    webview_payload = {"url": get_webview_url(params)}
+
+    # Responding query
+    reply = "Here are the top opportunities requested."    
+
+    responder.act("display-web-view", payload=webview_payload)
     responder.reply(text=reply)
     responder.speak(text=reply)
     responder.act('sleep')
