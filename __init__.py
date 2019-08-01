@@ -697,6 +697,18 @@ def soql_query_top_oppt(account, orderby, topn):
     response = requests.request("GET", soql_url, headers=headers)
     return json.loads(response.text)["records"]
 
+def soql_query_top_acct():
+    sf_token = get_sf_jwt_token()
+    headers = {
+        'Authorization': "Bearer " + sf_token,
+        'Content-Type': "application/json",
+        'cache-control': "no-cache"
+    }
+    query = "SELECT+Account.Name,+SUM(Amount)+FROM+Opportunity+GROUP+BY+Account.Name+ORDER+BY+SUM(Amount)+desc"
+    soql_url = sf_base_url + "/query?q={}".format(query)
+    response = requests.request("GET", soql_url, headers=headers)
+    return json.loads(response.text)["records"]
+
 
 @app.handle(intent='top-oppties')
 def top_oppties(request, responder):
@@ -740,3 +752,30 @@ def top_oppties(request, responder):
     responder.reply(text=reply)
     responder.speak(text=reply)
     responder.act('sleep')
+
+
+@app.handle(intent='top_accounts')
+def top_accounts(request, responder):
+
+    accounts = soql_query_top_acct()
+    acct_list = []
+    for acct in accounts:
+        acct_list.append({
+            "name": acct["Name"],
+            "total_oppt": acct["expr0"]
+        })
+    
+    params = {"graph_type": "sf_top_accounts",
+              "top_accounts": acct_list
+             }
+
+    webview_payload = {"url": get_webview_url(params)}
+
+    # Responding query
+    reply = "Here are the top accounts ordered by total opportunity."    
+
+    responder.act("display-web-view", payload=webview_payload)
+    responder.reply(text=reply)
+    responder.speak(text=reply)
+    responder.act('sleep')
+    
