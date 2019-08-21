@@ -559,16 +559,7 @@ def create_sf_object(object_type, payload):
     res = json.loads(response.text)
     return res["success"]
 
-
-@app.handle(intent='acct-summary')
-def show_acct_summary(request, responder):
-
-    account = next((e for e in request.entities), None)
-    if account:
-        account_id = account['value'][0]['id']
-        account = account['value'][0]['cname']
-        responder.frame['account'] = account
-        responder.frame['account_id'] = account_id
+def get_account_summary(account_id):
 
     # Retrieving general account info
     acct_info = get_sf_object("Account", account_id)
@@ -583,6 +574,7 @@ def show_acct_summary(request, responder):
         "website": acct_info["Website"],
         "employees": acct_info["NumberOfEmployees"],
         "sla": acct_info["SLA__c"],
+        "account_id": account_id
     }
 
     # Retrieving contacts
@@ -613,14 +605,32 @@ def show_acct_summary(request, responder):
             "title": note["Title"],
             "body": note["Body"]
         })
-    
-    # Generating the return URL for webview
-    params = {"graph_type": "sf_acct_sum",
-               "acct_info": acct_info,
-               "contacts": contact_list,
-               "oppts": oppt_list,
-               "notes": note_list
+
+    return {"acct_info": acct_info,
+            "contacts": contact_list,
+            "oppts": oppt_list,
+            "notes": note_list
             }
+
+@app.handle(intent='acct-summary')
+def show_acct_summary(request, responder):
+
+    account = next((e for e in request.entities), None)
+    if account:
+        account_id = account['value'][0]['id']
+        account = account['value'][0]['cname']
+        responder.frame['account'] = account
+        responder.frame['account_id'] = account_id
+
+
+    acct_sum = get_account_summary(account_id)
+    params = {"graph_type": "sf_acct_sum",
+               "acct_info": acct_sum['acct_info'],
+               "contacts": acct_sum['contacts'],
+               "oppts": acct_sum['oppts'],
+               "notes": acct_sum['notes']
+            }
+    
     webview_payload = {"url": get_webview_url(params)}
 
     # Responding query
@@ -650,16 +660,7 @@ def add_note(request, responder):
     responder.speak(text=reply)
     responder.act('listen')
     
-    
-# @app.handle(intent='add_note_followup')
-# def add_note_followup(request, responder):
 
-#     payload = json.dumps({"ParentId": request.frame['account_id'],
-#                           "Title": "Webex Assistant Note",
-#                           "Body": request.text
-#                          })
-
-#     res = create_sf_object("Note", payload)
 
 @app.handle(targeted_only=True)
 def add_note_followup(request, responder):
@@ -704,9 +705,10 @@ def soql_query_top_acct():
         'Content-Type': "application/json",
         'cache-control': "no-cache"
     }
-    query = "SELECT+Account.Name,+SUM(Amount)+FROM+Opportunity+GROUP+BY+Account.Name+ORDER+BY+SUM(Amount)+desc"
+    query = "SELECT+Account.Name,+Account.Id,+SUM(Amount)+FROM+Opportunity+GROUP+BY+Account.Name,+Account.Id+ORDER+BY+SUM(Amount)+desc"
     soql_url = sf_base_url + "/query?q={}".format(query)
     response = requests.request("GET", soql_url, headers=headers)
+    print(response.text)
     return json.loads(response.text)["records"]
 
 
@@ -754,18 +756,27 @@ def top_oppties(request, responder):
     responder.act('sleep')
 
 
+
 @app.handle(intent='top_accounts')
 def top_accounts(request, responder):
 
     accounts = soql_query_top_acct()
     acct_list = []
     for acct in accounts:
+        account_id = acct["Id"]
+        acct_info = get_sf_object("Account", account_id)
         acct_list.append({
             "name": acct["Name"],
-            "total_oppt": acct["expr0"]
+            "logo": account_id + ".png",
+            "total_oppt": acct["expr0"],
+            "rating": acct_info["Rating"],
+            "sla": acct_info["SLA__c"],
+            "description": acct_info["Description"],
+            "employees": acct_info["NumberOfEmployees"],
+            "acct_summary_url": "/account/"+ account_id
         })
     
-    params = {"graph_type": "sf_top_accounts",
+    params = {"graph_type": "sf_top_accounts_ac",
               "top_accounts": acct_list
              }
 

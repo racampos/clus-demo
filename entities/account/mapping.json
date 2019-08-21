@@ -80,5 +80,15 @@
             ],
             "cname": "Grand Hotels & Resorts Ltd",
             "id": "001j000000B08cCAAR"
+        },
+        {
+            "whitelist": [
+                "pyramid construction inc",
+                "pyramid",
+                "pyramid inc",
+                "pyramid construction incorporated"
+            ],
+            "cname": "Pyramid Construction Inc.",
+            "id": "001j000000B08cAAAR"
         }
     ]}
