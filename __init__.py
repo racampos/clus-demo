@@ -773,7 +773,7 @@ def top_accounts(request, responder):
             "sla": acct_info["SLA__c"],
             "description": acct_info["Description"],
             "employees": acct_info["NumberOfEmployees"],
-            "acct_summary_url": "/account/"+ account_id
+            "account_id": account_id
         })
     
     params = {"graph_type": "sf_top_accounts_ac",
