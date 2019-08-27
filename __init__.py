@@ -790,3 +790,12 @@ def top_accounts(request, responder):
     responder.speak(text=reply)
     responder.act('sleep')
     
+
+# Introduction Handler
+@app.handle(targeted_only=True)
+def extension_intro(request, responder):
+    reply = "Welcome to the CRM extension. I can answer questions about accounts and opportunities, as well as add notes to accounts."
+    
+    responder.reply(text=reply)
+    responder.speak(text=reply)
+    responder.act('sleep')
