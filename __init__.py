@@ -672,7 +672,7 @@ def add_note_followup(request, responder):
     res = create_sf_object("Note", payload)
 
     if res:
-        reply = "Your note was successully added."
+        reply = "Your note was successfully added."
     else:
         reply = "There was a problem adding your note."
     
