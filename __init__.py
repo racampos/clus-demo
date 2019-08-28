@@ -46,7 +46,7 @@ def default(request, responder):
     When the user asks an unrelated question, convey the lack of understanding for the requested
     information and prompt to return to food ordering.
     """
-    reply = "Sorry, not sure what you meant there. I can help you to obtain information about the status of your applications and your network, to perform path traces and to open support tickets."
+    reply = "Sorry, not sure what you meant there. I can answer questions about accounts and opportunities, as well as add notes to accounts."
     responder.reply(text=reply)
     responder.speak(text=reply)
 
