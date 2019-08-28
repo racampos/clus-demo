@@ -1,13 +1,21 @@
 show me the top accounts
+show me the top account
 show me the available accounts
+show me the available account
 show me all the accounts
 show me my accounts
+show me my account
 show my accounts
+show my account
 show the available accounts
+show the available account
 show the accounts in Salesforce
-show the accounts in the CRM
+show the account in Salesforce
+show the accounts in the CMR
+show the account in the CRM
 show all the accounts available
-what accounts are there in the CMR
+what accounts are there in the CRM
+what account is there in the CRM
 what accounts are there in Salesforce
 I want to see a list of all the accounts
 Please give me a list of the accounts
