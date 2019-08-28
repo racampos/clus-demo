@@ -798,4 +798,4 @@ def extension_intro(request, responder):
     
     responder.reply(text=reply)
     responder.speak(text=reply)
-    responder.act('sleep')
+    responder.act('listen')
